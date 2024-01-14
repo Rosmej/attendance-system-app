@@ -5,12 +5,12 @@ import av
 import time
 #st.set_page_config(page_title='Predictions')
 
-st.subheader('Real Time Prediction')
+st.subheader('Punch In')
 #Retrieve data from Redis Database
 with st.spinner('Retrieving Data from Redis DB...'):
     redis_face_db = face_rec.retrieve_data(name='ArcEmployees:register')
     st.dataframe(redis_face_db)
-st.success("Data successfully retrieved from Redis")
+st.success("Data successfully retrieved fro, Redis")
 # time
 waitTime= 10 # time in sec
 setTime = time.time()
@@ -39,5 +39,5 @@ def video_frame_callback(frame):
     return av.VideoFrame.from_ndarray(pred_img, format="bgr24")
 
 webrctc_ctxt = webrtc_streamer(key="realtimePrediction", video_frame_callback=video_frame_callback, rtc_configuration={
-        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+        "iceServers": [{"urls": ["stun:16.171.132.146:5349","turn:16.171.132.146:5349"]}]
     })
