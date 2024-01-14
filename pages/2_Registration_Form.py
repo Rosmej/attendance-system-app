@@ -4,7 +4,8 @@ import cv2
 import numpy as np
 from streamlit_webrtc import webrtc_streamer
 import av
-
+import os
+from twilio.rest import Client
 #st.set_page_config(page_title='Registration Form')
 st.subheader('Registration Form')
 
@@ -15,7 +16,10 @@ registration_form = face_rec.RegistrationForm()
 person_name = st.text_input(label='Name',placeholder='First & Last Name')
 Emp_Id = st.text_input(label='Emp Id',placeholder='ARC@12344')
 role= st.selectbox(label='select your Role',options=('SuperAdmin','Supervisor','User','Manager','HR'))
-
+account_sid = os.environ['AC22fad8fc98762c8a961730377698f54b']
+auth_token = os.environ['5491572a11fa6ff2c945bdfd175d62b2']
+client = Client(account_sid, auth_token)
+token = client.tokens.create()
 #step-2: Collect Facial embedding of the person
 
 def video_callback_func(frame):
@@ -29,7 +33,7 @@ def video_callback_func(frame):
     return av.VideoFrame.from_ndarray(reg_image,format='bgr24')
 
 webrtc_streamer(key="registration", video_frame_callback=video_callback_func, rtc_configuration={
-        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+         "iceServers": token.ice_servers
     })
 #step-3: save the data in redis Database
 

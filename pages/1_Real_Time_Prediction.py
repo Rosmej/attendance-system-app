@@ -3,9 +3,11 @@ from Home import face_rec
 from streamlit_webrtc import webrtc_streamer
 import av
 import time
+import os
+from twilio.rest import Client
 #st.set_page_config(page_title='Predictions')
 
-st.subheader('Real Time Prediction')
+st.subheader('Punch In')
 #Retrieve data from Redis Database
 with st.spinner('Retrieving Data from Redis DB...'):
     redis_face_db = face_rec.retrieve_data(name='ArcEmployees:register')
@@ -17,7 +19,11 @@ setTime = time.time()
 realtimepred = face_rec.RealTimePred() # Real Time Prediction class
 # Real Time Prediction
 #streamlit webrtc
+account_sid = os.environ['AC22fad8fc98762c8a961730377698f54b']
+auth_token = os.environ['5491572a11fa6ff2c945bdfd175d62b2']
+client = Client(account_sid, auth_token)
 
+token = client.tokens.create()
 # callback function
 difftime=0
 def video_frame_callback(frame):
@@ -39,5 +45,5 @@ def video_frame_callback(frame):
     return av.VideoFrame.from_ndarray(pred_img, format="bgr24")
 
 webrctc_ctxt = webrtc_streamer(key="realtimePrediction", video_frame_callback=video_frame_callback, rtc_configuration={
-        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+        "iceServers": token.ice_servers
     })
