@@ -24,20 +24,19 @@ def video_frame_callback(frame):
     global setTime
     img = frame.to_ndarray(format="bgr24") #3d numpy array
     #operation that can perform on the array
-    pred_img,person_name= realtimepred.face_prediction(img,redis_face_db,'facial_features',['Name','Role'],thresh=0.5)
+    pred_img= realtimepred.face_prediction(img,redis_face_db,'facial_features',['Name','Role'],thresh=0.5)
     timenow =time.time()
     difftime = timenow - setTime
     if difftime >= waitTime:
-        if(person_name != 'Unknown'):
-            st.success(f'{person_name} Logged in successfully')
             realtimepred.saveLogs_redis()
             setTime = time.time() # reset time
-            print(person_name)
             print('save data to redis db') 
           
            
     return av.VideoFrame.from_ndarray(pred_img, format="bgr24")
 
-webrctc_ctxt = webrtc_streamer(key="realtimePrediction", video_frame_callback=video_frame_callback, rtc_configuration={
-        "iceServers": [{"urls": ["stun:16.171.132.146:5349","turn:16.171.132.146:5349"]}]
-    })
+webrtc_streamer(key="realtimePrediction", video_frame_callback=video_frame_callback, rtc_configuration={
+    "iceServers": [{"urls": ["stun:16.171.132.146:5349","turn:16.171.132.146:5349"],
+                    "username":"rosmebaby",
+                    "credential":"rosmebaby:Moon@6868"}]
+})

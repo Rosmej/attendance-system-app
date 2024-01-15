@@ -123,7 +123,7 @@ class RealTimePred:
             self.logs['role'].append(person_role)
             self.logs['current_time'].append(current_time)
            
-        return test_copy,person_name
+        return test_copy
    
 class RegistrationForm:
     def __init__(self):
