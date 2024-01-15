@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 numpy
 pandas
 redis
@@ -7,4 +8,15 @@ streamlit
 streamlit-webrtc
 insightface
 onnxruntime
+=======
+numpy
+pandas
+redis
+opencv-python-headless
+scikit-learn
+streamlit
+streamlit-webrtc
+insightface
+onnxruntime
+>>>>>>> 2ce46fe9e23a8c689194b0cc268337b77cc76a63
 OS
